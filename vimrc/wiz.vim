@@ -38,7 +38,7 @@ endfunction
 
 function ToggleToDo()
 
-    let a=[' `[TODO]` ',' `[TODOFINISH]` ',' `[TODOCONTINUE]` ']
+    let a=[' `[TODO]` ',' `[FINISH]` ']
 
     let a0 = match(getline('.'), "\\V".a[0]."\\$")
     let a1 = match(getline('.'), "\\V".a[1]."\\$")
