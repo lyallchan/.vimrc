@@ -1,0 +1,22 @@
+"一般设定
+set gvimpath=/usr/local/bin/gvim
+set scrolloff=2
+set number
+set ignorecase smartcase
+set clipboard=unnamed 
+set incsearch		" do incremental searching
+set smartindent
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+
+"键盘映射
+"更方便的返回normal
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
+inoremap kj <ESC>
+
+nnoremap <space> <c-f>
