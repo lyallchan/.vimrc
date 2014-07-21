@@ -39,18 +39,28 @@ endfunction
 function ToggleToDo()
 
     let a=[' `[TODO]` ',' `[FINISH]` ']
+    let a0=[]
+    let a_length = len(a)
 
-    let a0 = match(getline('.'), "\\V".a[0]."\\$")
-    let a1 = match(getline('.'), "\\V".a[1]."\\$")
-    let a2 = match(getline('.'), "\\V".a[2]."\\$")
+    for i in a
+        call add(a0, match(getline('.'), "\\V".i."\\$"))
+    endfor
+    
+    let change = 0
 
-    if a0 >=0
-        exe "s/\\V" . a[0]."\\$" . "/" . a[1]
-    elseif a1 >=0
-        exe "s/\\V" . a[1]."\\$" . "/" . a[2]
-    elseif a2 >=0
-        exe "s/\\V" . a[2]."\\$" . "//"
-    elseif (a0 == -1) && (a1 == -1) && (a2 == -1)
+    for i in range(a_length)
+        if a0[i] >= 0 
+            if i < a_length-1
+                exe "s/\\V" . a[i]."\\$" . "/" . a[i+1] 
+            else
+                exe "s/\\V" . a[a_length-1]."\\$" . "//"
+            endif
+            let change = 1
+            break
+        endif
+    endfor
+
+    if !change
         exe "s/" . "$" . "/" . a[0]
     endif
 
