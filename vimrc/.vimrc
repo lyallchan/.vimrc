@@ -56,7 +56,7 @@ inoremap <C-v> <C-r>+
 "inoremap <C-u> <Esc>ui
 
 nnoremap <F2> :update<CR><esc>
-inoremap <F2> <C-O>:update<CR><esc>
+inoremap <F2> <esc>:update<CR><esc>
 vnoremap <F2> <C-C>:update<CR><esc>
 noremap <F3> <esc>:bn<CR>
 noremap <F4> <esc>:call CloseBuffer()<CR>
