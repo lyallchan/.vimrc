@@ -17,6 +17,7 @@ execute pathogen#infect()
 "set guioptions+=a
 "set mouse=a
 "set relativenumber
+let mapleader=","
 set scrolloff=2
 set sidescrolloff=10
 set linespace=5
