@@ -10,7 +10,7 @@ vnoremap <F5> :call ToggleToDo()<CR>gv
 
 " 2. 插入当前时间
 inoremap zsj # <c-r>=strftime("20%y-%m-%d %H:%M")<CR> 
-nmap zsj izsj
+nmap zsj Ozsj
 
 " 3. 对vim-markdown设定
 let g:vim_markdown_folding_disabled=1
