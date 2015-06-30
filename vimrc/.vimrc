@@ -68,13 +68,27 @@ vnoremap <F2> <C-C>:update<CR><esc>
 noremap <F3> <esc>:bn<CR>
 noremap <F4> <esc>:call CloseBuffer()<CR>
 inoremap <F4> <esc>:call CloseBuffer()<CR>
+noremap <F6> <esc>:cnext<CR>
+noremap <F7> <esc>:cprevious<CR>
 nnoremap <space> <c-f>
+
+"模拟emacs下的<c-a>和<c-e>
+inoremap <c-a> <esc>I
+nnoremap <c-a> 0
+vnoremap <c-a> 0
+inoremap <c-e> <esc>A
+nnoremap <c-e> $
+vnoremap <c-e> $
 
 " 缩小undo颗粒度
 " <c-g>u作用是在插入模式下，插入undo的分界点
-" inoremap <CR> <c-g>u<esc>o
 " CR的映射和supertab有冲突，直接在supertab.vim中插入了<c-g>u的代码
 " 具体为第960行和第962行
+inoremap <CR> <c-g>u<esc>o
+inoremap <space> <c-g>u<space>
+inoremap . <c-g>u.
+inoremap , <c-g>u,
+inoremap ! <c-g>u!
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
