@@ -68,8 +68,6 @@ vnoremap <F2> <C-C>:update<CR><esc>
 noremap <F3> <esc>:bn<CR>
 noremap <F4> <esc>:call CloseBuffer()<CR>
 inoremap <F4> <esc>:call CloseBuffer()<CR>
-noremap <F6> <esc>:cnext<CR>
-noremap <F7> <esc>:cprevious<CR>
 nnoremap <space> <c-f>
 
 "模拟emacs下的<c-a>和<c-e>
