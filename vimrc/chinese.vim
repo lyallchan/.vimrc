@@ -3,6 +3,7 @@
 "set guifont=consolas:cGB2312:h11
 "set fileencoding=chinese
 
+set encoding=utf-8
 if has("win32")
     set encoding=chinese
 endif
