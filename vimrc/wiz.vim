@@ -38,7 +38,7 @@ endfunction
 
 function ToggleToDo()
 
-    let a=[' `[TODO]` ',' `[FINISH]` ']
+    let a=[' `[TODO]`',' `[FINISH]`']
     let a0=[]
     let a_length = len(a)
 
