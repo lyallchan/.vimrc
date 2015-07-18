@@ -70,13 +70,15 @@ noremap <F4> <esc>:call CloseBuffer()<CR>
 inoremap <F4> <esc>:call CloseBuffer()<CR>
 nnoremap <space> <c-f>
 
-"模拟emacs下的<c-a>和<c-e>
+"模拟emacs下的<c-a>和<c-e>,插入模式下的<c-n><c-p>
 inoremap <c-a> <esc>I
 nnoremap <c-a> 0
 vnoremap <c-a> 0
 inoremap <c-e> <esc>A
 nnoremap <c-e> $
 vnoremap <c-e> $
+inoremap <c-n> <down>
+inoremap <c-p> <up>
 
 " 缩小undo颗粒度
 " <c-g>u作用是在插入模式下，插入undo的分界点
