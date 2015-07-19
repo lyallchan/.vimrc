@@ -10,14 +10,15 @@ if has("win32")
     set rtp+=$HOME/.vim
 endif
 
-" set undo dir and enable undo
-if has("persistent_undo")
-    set undodir='~/.vim/undodir/'
-    set undofile
-endif
-
 " bundle support
 execute pathogen#infect()
+
+" set undo dir and enable undo
+"if has("persistent_undo")
+    "set undodir='~/.vimundodir/'
+    "set undofile
+"endif
+" test for undotree test 
 
 "“ª∞„…Ë∂®
 "set guioptions+=a
