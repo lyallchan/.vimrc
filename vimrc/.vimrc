@@ -1,4 +1,5 @@
 
+set viminfo='100,n~/.vim/viminfo
 if has("gui") && has("mac")
     colorscheme zellner
     set guifont=Monaco:h14
@@ -8,31 +9,48 @@ if has("win32")
 "    source $VIMRUNTIME/mswin.vim
 "    gvim和vim on cygwin共用.vim文件夹
     set rtp+=$HOME/.vim
+    set encoding=chinese
+    set viminfo='100,n~/.vim/gviminfo
+    set columns=110
+    set lines=40
 endif
 
 " bundle support
 filetype off
 execute pathogen#infect()
 execute pathogen#helptags()
-filetype plugin indent on
-syntax on 
 
-" set undo dir and enable undo
-"if has("persistent_undo")
-    "set undodir='~/.vimundodir/'
-    "set undofile
-"endif
-" test for undotree test 
+"中文支持
+"set guifont=consolas:cGB2312:h11
+"set fileencoding=chinese
+set encoding=utf-8
+set ambiwidth=double
+set helplang=cn
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+set formatoptions+=tcrqvmMB "正确处理中文折行
+
+"程序支持
+syntax enable 
+syntax on
+filetype on
+filetype indent on
+filetype plugin on
+set smartindent
+set smarttab
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 
 "一般设定
 "set guioptions+=a
 "set mouse=a
-"set relativenumber
 let mapleader=","
 set scrolloff=2
 set sidescrolloff=10
 set linespace=5
 set number
+set relativenumber
 set ignorecase smartcase
 set noswapfile
 set confirm
@@ -49,13 +67,6 @@ set nowrap
 set history=100		" keep 50 lines of command line history
 set showcmd		" display incomplete commands
 set backspace=indent,eol,start
-set viminfo='100,n~/.vim/viminfo
-if has("win32")
-    set viminfo='100,n~/.vim/gviminfo
-    set columns=110
-    set lines=40
-"    behave mswin
-endif
 
 "键盘映射
 "更方便的返回normal
@@ -66,6 +77,10 @@ vnoremap : ;
 inoremap kj <ESC>
 inoremap <C-v> <C-r>+
 "inoremap <C-u> <Esc>ui
+
+"使用tab键来代替%进行匹配跳转
+nnoremap <tab> %
+vnoremap <tab> %
 
 nnoremap <F2> :update<CR><esc>
 inoremap <F2> <esc>:update<CR><esc>
@@ -100,7 +115,9 @@ inoremap <c-w> <c-g>u<c-w>
 " 一些自动命令
 " 打开文件时，自动定位到上次修改的地方
 au BufReadPost * normal! `" 
-au FileType ahk set commentstring=;\ %s
+
+"自动载入配置文件不需要重启
+autocmd! bufwritepost .vimrc source %
 
 " 载入其它配置, ~/.vim/vimrc/*.vim
 runtime! vimrc/*.vim
