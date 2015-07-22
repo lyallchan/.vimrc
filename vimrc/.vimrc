@@ -11,7 +11,11 @@ if has("win32")
 endif
 
 " bundle support
+filetype off
 execute pathogen#infect()
+execute pathogen#helptags()
+filetype plugin indent on
+syntax on 
 
 " set undo dir and enable undo
 "if has("persistent_undo")
@@ -96,6 +100,7 @@ inoremap <c-w> <c-g>u<c-w>
 " 一些自动命令
 " 打开文件时，自动定位到上次修改的地方
 au BufReadPost * normal! `" 
+au FileType ahk set commentstring=;\ %s
 
 " 载入其它配置, ~/.vim/vimrc/*.vim
 runtime! vimrc/*.vim
