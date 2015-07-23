@@ -1,20 +1,3 @@
-
-set viminfo='100,n~/.vim/viminfo
-if has("gui") && has("mac")
-    colorscheme zellner
-    set guifont=Monaco:h14
-endif
-if has("win32")
-"    source $VIMRUNTIME/vimrc_example.vim
-"    source $VIMRUNTIME/mswin.vim
-"    gvim和vim on cygwin共用.vim文件夹
-    set rtp+=$HOME/.vim
-    set encoding=chinese
-    set viminfo='100,n~/.vim/gviminfo
-    set columns=110
-    set lines=40
-endif
-
 " bundle support
 filetype off
 execute pathogen#infect()
@@ -65,6 +48,7 @@ set nowrapscan
 set wildmenu
 set nowrap
 set history=100		" keep 50 lines of command line history
+set viminfo='100,n~/.vim/viminfo
 set showcmd		" display incomplete commands
 set backspace=indent,eol,start
 
@@ -111,6 +95,21 @@ inoremap , <c-g>u,
 inoremap ! <c-g>u!
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
+
+if has("gui") && has("mac")
+    colorscheme zellner
+    set guifont=Monaco:h14
+endif
+if has("win32")
+"    source $VIMRUNTIME/vimrc_example.vim
+"    source $VIMRUNTIME/mswin.vim
+"    gvim和vim on cygwin共用.vim文件夹
+    set rtp+=$HOME/.vim
+    set encoding=chinese
+    set viminfo='100,n~/.vim/gviminfo
+    set columns=110
+    set lines=40
+endif
 
 " 一些自动命令
 " 打开文件时，自动定位到上次修改的地方
