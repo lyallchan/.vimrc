@@ -45,6 +45,7 @@ set nobackup
 set nocompatible
 set foldmethod=marker
 set nowrapscan
+set hidden "no need saving file while switching to another buffer"
 set wildmenu
 set nowrap
 set history=100		" keep 50 lines of command line history
