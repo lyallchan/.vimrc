@@ -64,8 +64,8 @@ inoremap <C-v> <C-r>+
 "inoremap <C-u> <Esc>ui
 
 "使用tab键来代替%进行匹配跳转
-nnoremap <tab> %
-vnoremap <tab> %
+nmap <tab> %
+vmap <tab> %
 
 nnoremap <F2> :update<CR><esc>
 inoremap <F2> <esc>:update<CR><esc>
