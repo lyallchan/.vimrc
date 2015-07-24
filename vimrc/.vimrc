@@ -25,6 +25,7 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+set laststatus=2 "always show status line, ruler responses c-g only"
 
 "一般设定
 "set guioptions+=a
@@ -40,7 +41,7 @@ set noswapfile
 set confirm
 set clipboard=unnamed   "使用系统剪贴板做为VIM的默认寄存器，这样方便VIM和别的程序交换数据
 set fileformat=unix
-set ruler		" show the cursor position all the time
+" set ruler		" show the cursor position all the time
 set incsearch		" do incremental searching
 set nobackup
 set nocompatible
