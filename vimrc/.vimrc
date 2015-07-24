@@ -24,6 +24,7 @@ set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 "Ò»°ãÉè¶¨
 "set guioptions+=a
