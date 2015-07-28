@@ -1,15 +1,14 @@
 let g:lightline = {
-      \ 'colorscheme': 'landscape',
+      \ 'colorscheme': 'user',
       \ 'active': {
       \   'left': [ 
-      \             [ 'filename', 'modified' ],
-      \             [ 'readonly' ],
+      \             [ 'filename', 'modified', 'readonly' ],
       \             [ 'fugitive' ]
       \           ],
       \  'right': [ 
       \             [ 'time' ],
-      \             [ 'lineinfo' ],
-      \             [ 'percent' ],
+      \             [ 'lineinfo' ], 
+      \             [ 'percent' ], 
       \             [ 'fileencoding' ]
       \           ] 
       \ },
@@ -28,3 +27,6 @@ let g:lightline = {
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 set t_Co=256
+if has("gui")
+    let g:lightline.colorscheme = 'user_gui'
+endif
