@@ -1,3 +1,4 @@
 gviminfo
 viminfo
 .netrwhist
+*.pyc

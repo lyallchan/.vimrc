@@ -56,7 +56,8 @@ if v:version < 704
         " user might have disabled them himself, check that
         if index(g:pandoc#modules#disabled, incompatible_module) == -1
             let g:pandoc#modules#disabled = add(g:pandoc#modules#disabled, incompatible_module)
-            let s:module_disabled = 1
+            let s:module_disabled = 0
+            " let s:module_disabled = 1
         endif
     endfor
     " only message the user if we have extended g:pandoc#modules#disabled
