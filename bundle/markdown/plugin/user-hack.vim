@@ -27,9 +27,10 @@ nnoremap <F6> :s/^\s*/\=submatch(0).Seqno().'. '/<CR>
 noremap <leader><F6> :let b:seq=0<CR>
 
 " 6. markdown表格支持
-noremap <F7> :s/^\s*\\|\s*$\\|\s\+/ \| /g<CR>
-vnoremap <s-f7> :s/\%V \| \\| \|$\%V/   /g<CR>
-nnoremap <s-f7> :s/ \| \\| \|$/   /g<CR>
+" 不再使用，用[table-mode](http://www.jianshu.com/p/452d478bc579)插件代替
+" noremap <F7> :s/^\s*\\|\s*$\\|\s\+/ \| /g<CR>
+" vnoremap <s-f7> :s/\%V \| \\| \|$\%V/   /g<CR>
+" nnoremap <s-f7> :s/ \| \\| \|$/   /g<CR>
 
 function Seqno()
     let b:seq = exists("b:seq")?b:seq+1:1

@@ -1,3 +1,4 @@
+
 if has("gui") && has("mac")
     colorscheme zellner
     set guifont=Monaco:h14
@@ -6,13 +7,13 @@ if has("win32")
 "    source $VIMRUNTIME/vimrc_example.vim
 "    source $VIMRUNTIME/mswin.vim
 "    gvim和vim on cygwin共用.vim文件夹
-    set rtp+=$HOME/.vim
+    set rtp+=$HOME/.vim/after
     set columns=110
     set lines=40
 endif
 
-
 " bundle support
+let g:pathogen_blacklist=["easymotion"] "在列表中的插件不会被加载"
 filetype off
 execute pathogen#infect()
 execute pathogen#helptags()
