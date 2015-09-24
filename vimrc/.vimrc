@@ -13,7 +13,7 @@ if has("win32")
 endif
 
 " bundle support
-let g:pathogen_blacklist=["easymotion"] "在列表中的插件不会被加载"
+let g:pathogen_blacklist=["easymotion","undotree"] "在列表中的插件不会被加载"
 filetype off
 execute pathogen#infect()
 execute pathogen#helptags()
