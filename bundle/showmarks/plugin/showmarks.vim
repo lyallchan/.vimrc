@@ -92,9 +92,13 @@ let loaded_showmarks = 1
 
 " Bail if Vim isn't compiled with signs support.
 if has( "signs" ) == 0
-	echohl ErrorMsg
-	echo "ShowMarks requires Vim to have +signs support."
-	echohl None
+    " jwu ADD: only show the error in gui version { 
+	if has("gui_running")
+		echohl ErrorMsg
+		echo "ShowMarks requires Vim to have +signs support."
+		echohl None
+	endif
+    " } jwu ADD end 
 	finish
 endif
 
@@ -119,7 +123,10 @@ com! -nargs=0 ShowMarksToggle    :call <sid>ShowMarksToggle()
 com! -nargs=0 ShowMarksOn        :call <sid>ShowMarksOn()
 com! -nargs=0 ShowMarksClearMark :call <sid>ShowMarksClearMark()
 com! -nargs=0 ShowMarksClearAll  :call <sid>ShowMarksClearAll()
-com! -nargs=0 ShowMarksPlaceMark :call <sid>ShowMarksPlaceMark()
+" JWU MODIFY { 
+" com! -nargs=0 ShowMarksPlaceMark :call <sid>ShowMarksPlaceMark()
+com! -nargs=0 ShowMarksPlaceMark :call <sid>ShowMarksPlaceMark('')
+" } JWU MODIFY end 
 
 " Mappings (NOTE: Leave the '|'s immediately following the '<cr>' so the mapping does not contain any trailing spaces!)
 if !hasmapto( '<Plug>ShowmarksShowMarksToggle' ) | map <silent> <unique> <leader>mt :ShowMarksToggle<cr>|    endif
@@ -127,22 +134,48 @@ if !hasmapto( '<Plug>ShowmarksShowMarksOn'     ) | map <silent> <unique> <leader
 if !hasmapto( '<Plug>ShowmarksClearMark'       ) | map <silent> <unique> <leader>mh :ShowMarksClearMark<cr>| endif
 if !hasmapto( '<Plug>ShowmarksClearAll'        ) | map <silent> <unique> <leader>ma :ShowMarksClearAll<cr>|  endif
 if !hasmapto( '<Plug>ShowmarksPlaceMark'       ) | map <silent> <unique> <leader>mm :ShowMarksPlaceMark<cr>| endif
-noremap <unique> <script> \sm m
-noremap <silent> m :exe 'norm \sm'.nr2char(getchar())<bar>call <sid>ShowMarks()<CR>
 
+" JWU MODIFY { 
+noremap <unique> <script> \sm m
+" noremap <silent> m :exe 'norm \sm'.nr2char(getchar())<bar>call <sid>ShowMarks()<CR>
+" NOTE: use nnoremap to fix conlict with snipMate. when use snipMate, when you input m, it will be ma. 
+nnoremap <unique> <silent> m :call <sid>ShowMarksPlaceMark( nr2char(getchar()) )<CR>
+" } JWU MODIFY end 
+
+" JWU DISABLE { 
 " AutoCommands: Only if ShowMarks is enabled
-if g:showmarks_enable == 1
-	aug ShowMarks
-		au!
-		autocmd CursorHold * call s:ShowMarks()
-	aug END
-endif
+" if g:showmarks_enable == 1
+" 	aug ShowMarks
+" 		au!
+" 		autocmd CursorHold * call s:ShowMarks()
+" 	aug END
+" endif
+" } JWU DISABLE end 
 
 " Highlighting: Setup some nice colours to show the mark positions.
 hi default ShowMarksHLl ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
 hi default ShowMarksHLu ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
 hi default ShowMarksHLo ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
 hi default ShowMarksHLm ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
+
+" Function: GetMarkLine()
+" Authors: Easwy Yang
+" Description: This function will return the line number where the mark
+" placed. In VIM 7.0 and later, function line() always returns line number but
+" not 0 in case an uppercase mark or number mark is placed. However, in VIM 6,
+" it only returns 0 when the uppercase mark isn't placed in current file.
+fun! s:GetMarkLine(mark)
+    if v:version < 700
+        let lnum = line(a:mark)
+    else
+        let pos = getpos(a:mark)
+        let lnum = pos[1]
+        if pos[0] && bufnr("%") != pos[0]
+            let lnum = 0
+        endif
+    endif
+    return lnum
+endf
 
 " Function: IncludeMarks()
 " Description: This function returns the list of marks (in priority order) to
@@ -313,17 +346,21 @@ fun! s:ShowMarksToggle()
 	if g:showmarks_enable == 0
 		let g:showmarks_enable = 1
 		call <sid>ShowMarks()
-		aug ShowMarks
-			au!
-			autocmd CursorHold * call s:ShowMarks()
-		aug END
+        " JWU DISABLE { 
+		" aug ShowMarks
+		" 	au!
+		" 	autocmd CursorHold * call s:ShowMarks()
+		" aug END
+        " } JWU DISABLE end 
 	else
 		let g:showmarks_enable = 0
 		call <sid>ShowMarksHideAll()
-		aug ShowMarks
-			au!
-			autocmd BufEnter * call s:ShowMarksHideAll()
-		aug END
+        " JWU DISABLE { 
+		" aug ShowMarks
+		" 	au!
+		" 	autocmd BufEnter * call s:ShowMarksHideAll()
+		" aug END
+        " } JWU DISABLE end 
 	endif
 endf
 
@@ -354,7 +391,8 @@ fun! s:ShowMarks()
 		let c = strpart(s:IncludeMarks(), n, 1)
 		let nm = s:NameOfMark(c)
 		let id = n + (s:maxmarks * winbufnr(0))
-		let ln = line("'".c)
+		"let ln = line("'".c)
+		let ln = s:GetMarkLine("'".c)
 
 		if ln == 0 && (exists('b:placed_'.nm) && b:placed_{nm} != ln)
 			exe 'sign unplace '.id.' buffer='.winbufnr(0)
@@ -393,11 +431,18 @@ fun! s:ShowMarksClearMark()
 	let s:maxmarks = strlen(s:IncludeMarks())
 	while n < s:maxmarks
 		let c = strpart(s:IncludeMarks(), n, 1)
-		if c =~# '[a-zA-Z]' && ln == line("'".c)
+		"if c =~# '[a-zA-Z]' && ln == line("'".c)
+		if c =~# '[a-zA-Z]' && ln == s:GetMarkLine("'".c)
 			let nm = s:NameOfMark(c)
 			let id = n + (s:maxmarks * winbufnr(0))
 			exe 'sign unplace '.id.' buffer='.winbufnr(0)
-			exe '1 mark '.c
+            " Easwy, we can really remove marks in VIM 7.0 and later
+            if v:version >= 700
+                exe 'delm '.c
+            else
+                exe '1 mark '.c
+            endif
+            " Easwy, end
 			let b:placed_{nm} = 1
 		endif
 		let n = n + 1
@@ -417,7 +462,13 @@ fun! s:ShowMarksClearAll()
 			let nm = s:NameOfMark(c)
 			let id = n + (s:maxmarks * winbufnr(0))
 			exe 'sign unplace '.id.' buffer='.winbufnr(0)
-			exe '1 mark '.c
+            " Easwy, we can really remove marks in VIM 7.0 and later
+            if v:version >= 700
+                exe 'delm '.c
+            else
+                exe '1 mark '.c
+            endif
+            " Easwy, end
 			let b:placed_{nm} = 1
 		endif
 		let n = n + 1
@@ -448,7 +499,10 @@ endf
 " of marks so the user doesn't have to remember which marks are placed or not.
 " Hidden marks are considered to be unplaced.
 " Only marks a-z are supported.
-fun! s:ShowMarksPlaceMark()
+" JWU MODIFY { 
+" fun! s:ShowMarksPlaceMark()
+fun! s:ShowMarksPlaceMark(mark_name)
+" } JWU MODIFY end 
 	" Find the first, next, and last [a-z] mark in showmarks_include (i.e.
 	" priority order), so we know where to "wrap".
 	let first_alpha_mark = -1
@@ -459,47 +513,66 @@ fun! s:ShowMarksPlaceMark()
 		let b:previous_auto_mark = -1
 	endif
 
-	" Find the next unused [a-z] mark (in priority order); if they're all
-	" used, find the next one after the previously auto-assigned mark.
-	let n = 0
-	let s:maxmarks = strlen(s:IncludeMarks())
-	while n < s:maxmarks
-		let c = strpart(s:IncludeMarks(), n, 1)
-		if c =~# '[a-z]'
-			if line("'".c) <= 1
-				" Found an unused [a-z] mark; we're done.
-				let next_mark = n
-				break
-			endif
+	if a:mark_name == '' " if there is no mark name specified, we use increase mark selection method
+		" Find the next unused [a-z] mark (in priority order); if they're all
+		" used, find the next one after the previously auto-assigned mark.
+		let n = 0
+		let s:maxmarks = strlen(s:IncludeMarks())
+		while n < s:maxmarks
+			let c = strpart(s:IncludeMarks(), n, 1)
+			if c =~# '[a-z]'
+				"if line("'".c) <= 1
+				if s:GetMarkLine("'".c) <= 1
+					" Found an unused [a-z] mark; we're done.
+					let next_mark = n
+					break
+				endif
 
-			if first_alpha_mark < 0
-				let first_alpha_mark = n
+				if first_alpha_mark < 0
+					let first_alpha_mark = n
+				endif
+				let last_alpha_mark = n
+				if n > b:previous_auto_mark && next_mark == -1
+					let next_mark = n
+				endif
 			endif
-			let last_alpha_mark = n
-			if n > b:previous_auto_mark && next_mark == -1
-				let next_mark = n
+			let n = n + 1
+		endw
+
+		if next_mark == -1 && (b:previous_auto_mark == -1 || b:previous_auto_mark == last_alpha_mark)
+			" Didn't find an unused mark, and haven't placed any auto-chosen marks yet,
+			" or the previously placed auto-chosen mark was the last alpha mark --
+			" use the first alpha mark this time.
+			let next_mark = first_alpha_mark
+		endif
+
+		if (next_mark == -1)
+			echohl WarningMsg
+			echo 'No marks in [a-z] included! (No "next mark" to choose from)'
+			echohl None
+			return
+		endif
+
+		let c = strpart(s:IncludeMarks(), next_mark, 1)
+		let b:previous_auto_mark = next_mark
+		exe 'mark '.c
+	else
+		" JWU ADD { 
+		let do_mark = 1
+		if a:mark_name =~# '[a-z]' " only lowercase marks can toggle use
+			let mark_line = s:GetMarkLine("'".a:mark_name) 
+			if mark_line != 0 && mark_line == line('.') " if this mark been used and same as current line
+				let do_mark = 0
 			endif
 		endif
-		let n = n + 1
-	endw
 
-	if next_mark == -1 && (b:previous_auto_mark == -1 || b:previous_auto_mark == last_alpha_mark)
-		" Didn't find an unused mark, and haven't placed any auto-chosen marks yet,
-		" or the previously placed auto-chosen mark was the last alpha mark --
-		" use the first alpha mark this time.
-		let next_mark = first_alpha_mark
+		silent call <sid>ShowMarksClearMark()
+		if do_mark
+			silent exe 'norm \sm'.a:mark_name
+		endif
+		" } JWU ADD end 
 	endif
 
-	if (next_mark == -1)
-		echohl WarningMsg
-		echo 'No marks in [a-z] included! (No "next mark" to choose from)'
-		echohl None
-		return
-	endif
-
-	let c = strpart(s:IncludeMarks(), next_mark, 1)
-	let b:previous_auto_mark = next_mark
-	exe 'mark '.c
 	call <sid>ShowMarks()
 endf
 
