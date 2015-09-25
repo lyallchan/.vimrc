@@ -109,7 +109,7 @@ if !exists('g:showmarks_textupper'   ) | let g:showmarks_textupper    = ">"  | e
 if !exists('g:showmarks_textother'   ) | let g:showmarks_textother    = ">"  | endif
 if !exists('g:showmarks_ignore_type' ) | let g:showmarks_ignore_type  = "hq" | endif
 if !exists('g:showmarks_ignore_name' ) | let g:showmarks_ignore_name  = ""   | endif
-if !exists('g:showmarks_hlline_lower') | let g:showmarks_hlline_lower = "0"  | endif
+if !exists('g:showmarks_hlline_lower') | let g:showmarks_hlline_lower = 1    | endif
 if !exists('g:showmarks_hlline_upper') | let g:showmarks_hlline_upper = "0"  | endif
 if !exists('g:showmarks_hlline_other') | let g:showmarks_hlline_other = "0"  | endif
 
