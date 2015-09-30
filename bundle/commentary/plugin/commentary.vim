@@ -82,12 +82,22 @@ command! -range -bar Commentary call s:go(<line1>,<line2>)
 
 if !hasmapto('<Plug>Commentary') || maparg('gc','n') ==# ''
   xmap gc  <Plug>Commentary
-  nmap gc  <Plug>Commentary
-  omap gc  <Plug>Commentary
+  " nmap gc  <Plug>Commentary
+  " omap gc  <Plug>Commentary
   nmap gcc <Plug>CommentaryLine
   nmap cgc <Plug>ChangeCommentary
   nmap gcu <Plug>Commentary<Plug>Commentary
 endif
+
+" add by lyallchan 
+" support {count}gc{motion}
+function! s:exego()
+  let s:sid=matchstr(expand('<sfile>'), '<SNR>\d\+_')
+  execute "set operatorfunc=".s:sid."go"
+  return "g@"
+endfunction
+nnoremap <expr>gc <SID>exego()
+" add by lyallchan end
 
 if maparg('\\','n') ==# '' && maparg('\','n') ==# '' && get(g:, 'commentary_map_backslash', 1)
   xmap \\  <Plug>Commentary:echomsg '\\ is deprecated. Use gc'<CR>

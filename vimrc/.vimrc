@@ -10,6 +10,15 @@ if has("win32")
     set rtp+=$HOME/.vim/after
     set columns=110
     set lines=40
+    set guioptions-=m "菜单"
+    set guioptions-=T "工具栏"
+    set guioptions-=r "右边滚动条"
+    set guioptions+=c "不使用对话框"
+    let w:full_screen=0
+    nnoremap <F11> :call other#FullScreen()<CR>
+    inoremap <F11> <esc>:call other#FullScreen()<CR>i
+    nnoremap <M-enter> :call other#FullScreen()<CR>
+    inoremap <M-enter> <esc>:call other#FullScreen()<CR>i
 endif
 
 " bundle support
@@ -46,13 +55,14 @@ set laststatus=2 "always show status line, ruler responses c-g only"
 
 "一般设定
 "set guioptions+=a
-"set mouse=a
+set mouse=a
 let mapleader=","
 set scrolloff=2
 set sidescrolloff=10
 set linespace=5
 set number
 set relativenumber
+set numberwidth=6
 set ignorecase smartcase
 set noswapfile
 set confirm
@@ -74,6 +84,7 @@ if has("win32")
 endif 
 set showcmd		" display incomplete commands
 set backspace=indent,eol,start
+highlight CursorLineNr gui=none guifg=brown guibg=#d0d0d0 ctermfg=11 ctermbg=gray
 
 "键盘映射
 "更方便的返回normal
@@ -83,11 +94,15 @@ vnoremap ; :
 vnoremap : ;
 inoremap kj <ESC>
 inoremap <C-v> <C-r>+
-"inoremap <C-u> <Esc>ui
+onoremap a 0
+onoremap e $
 
 "使用tab键来代替%进行匹配跳转
 nmap <tab> %
 vmap <tab> %
+
+" buffer跳转
+nnoremap <leader>w <c-w>w
 
 nnoremap <F2> :update<CR><esc>
 inoremap <F2> <esc>:update<CR><esc>

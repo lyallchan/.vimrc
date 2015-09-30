@@ -89,3 +89,13 @@ function! ToggleComment(g)
             call setline('.',a:g.getline('.'))
         endif
 endfunction
+
+function! other#FullScreen()
+    if w:full_screen==1
+        let w:full_screen=0
+        :simalt ~R
+    else
+        :simalt ~X
+        let w:full_screen=1
+    endif
+endfunction
