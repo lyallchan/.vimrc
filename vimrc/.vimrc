@@ -8,8 +8,9 @@ if has("win32")
 "    source $VIMRUNTIME/mswin.vim
 "    gvim和vim on cygwin共用.vim文件夹
     set rtp+=$HOME/.vim/after
-    set columns=110
-    set lines=40
+    set columns=100
+    set lines=30
+    autocmd! guienter * winpos 66 80
     set guioptions-=m "菜单"
     set guioptions-=T "工具栏"
     set guioptions-=r "右边滚动条"
@@ -25,7 +26,7 @@ endif
 let g:pathogen_blacklist=["easymotion","undotree"] "在列表中的插件不会被加载"
 filetype off
 execute pathogen#infect()
-execute pathogen#helptags()
+call pathogen#helptags()
 
 "中文支持
 "set guifont=consolas:cGB2312:h11
